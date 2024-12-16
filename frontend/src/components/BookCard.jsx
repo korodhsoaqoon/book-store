@@ -6,6 +6,7 @@ const BookCard = ({ book }) => {
 
   const handleDelete = async (bookId) => {
     const { success, message } = await deleteBook(bookId);
+    console.log(success, message);
   };
   return (
     <div className="bg-blue-50 flex-1 p-4 rounded-xl shadow-md">

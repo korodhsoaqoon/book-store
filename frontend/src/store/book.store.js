@@ -27,7 +27,7 @@ export const useBookStore = create((set) => ({
       body: JSON.stringify(newBook),
     });
     const data = await res.json();
-    set((state) => ({ books: [...state, data.data] }));
+    set((state) => ({ books: [...state.books, data.data] }));
     return { success: true, message: "Book Saved Successfully" };
   },
 
@@ -35,7 +35,8 @@ export const useBookStore = create((set) => ({
     const res = await fetch(`http://localhost:3000/api/books/${bookId}`, {
       method: "DELETE",
     });
-    const data = res.json();
+    const data = await res.json();
+
     if (!data.success) return { success: false, message: data.message };
     set((state) => ({
       books: state.books.filter((book) => book._id !== bookId),

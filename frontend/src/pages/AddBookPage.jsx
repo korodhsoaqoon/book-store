@@ -12,8 +12,8 @@ const AddBookPage = () => {
     price: "",
   });
 
-  const handleSave = async () => {
-    const { success, message } = await saveBook(newBook);
+  const handleSave = () => {
+    const { success, message } = saveBook(newBook);
     console.log(success);
     console.log(message);
   };
