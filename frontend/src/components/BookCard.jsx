@@ -4,7 +4,7 @@ const BookCard = ({ book }) => {
   return (
     <div className="bg-blue-50 flex-1 p-4 rounded-xl shadow-md">
       <img
-        className="w-full rounded-lg "
+        className="w-full rounded-lg h-[400px]"
         src={book.cover_image}
         alt={book.title}
       />
