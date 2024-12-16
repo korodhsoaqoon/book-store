@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Book from "../models/book.model.js";
 // Get All Books
 export const getAllBooks = async (req, res) => {
@@ -16,8 +17,25 @@ export const getAllBooks = async (req, res) => {
 
 // Get single Book
 
-export const getBookById = (req, res) =>
-  res.send({ messge: "Get Single Book" });
+export const getBookById = async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({
+      success: false,
+      message: "Invalid BookId",
+    });
+  }
+
+  try {
+    const book = await Book.findById(id);
+    res.status(200).json({ success: true, data: book });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: `Error - ${error.message}`,
+    });
+  }
+};
 
 // Save Book
 export const saveBook = async (req, res) => {
