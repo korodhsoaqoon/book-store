@@ -1,6 +1,12 @@
 import { FiTrash, FiEdit } from "react-icons/fi";
 import { CgMoreO } from "react-icons/cg";
+import { useBookStore } from "../store/book.store";
 const BookCard = ({ book }) => {
+  const { deleteBook } = useBookStore();
+
+  const handleDelete = async (bookId) => {
+    const { success, message } = await deleteBook(bookId);
+  };
   return (
     <div className="bg-blue-50 flex-1 p-4 rounded-xl shadow-md">
       <img
@@ -30,7 +36,10 @@ const BookCard = ({ book }) => {
               <FiEdit className="inline-block" /> Edit
             </span>
           </button>
-          <button className="text-xl mr-2 text-red-700 hover:text-red-800 transition-all duration-200 hover:-translate-y-1">
+          <button
+            onClick={() => handleDelete(book._id)}
+            className="text-xl mr-2 text-red-700 hover:text-red-800 transition-all duration-200 hover:-translate-y-1"
+          >
             <span className="flex items-center gap-2">
               <FiTrash className="inline-block" /> Delete
             </span>

@@ -30,4 +30,16 @@ export const useBookStore = create((set) => ({
     set((state) => ({ books: [...state, data.data] }));
     return { success: true, message: "Book Saved Successfully" };
   },
+
+  deleteBook: async (bookId) => {
+    const res = await fetch(`http://localhost:3000/api/books/${bookId}`, {
+      method: "DELETE",
+    });
+    const data = res.json();
+    if (!data.success) return { success: false, message: data.message };
+    set((state) => ({
+      books: state.books.filter((book) => book._id !== bookId),
+    }));
+    return { success: true, message: data.message };
+  },
 }));
