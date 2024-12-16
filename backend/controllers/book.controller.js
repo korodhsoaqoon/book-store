@@ -1,6 +1,18 @@
 import Book from "../models/book.model.js";
 // Get All Books
-export const getAllBooks = (req, res) => res.send({ message: "All Books" });
+export const getAllBooks = async (req, res) => {
+  try {
+    const books = await Book.find();
+    res.status(200).json({
+      success: true,
+      data: books,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: `Error - ${error.message}` });
+  }
+};
 
 // Get single Book
 
