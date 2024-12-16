@@ -65,7 +65,28 @@ export const saveBook = async (req, res) => {
 };
 
 // Updating book
-export const updateBook = (req, res) => res.send({ message: "Update a book" });
+export const updateBook = async (req, res) => {
+  const { id } = req.params;
+  const newBookInfo = req.body;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({
+      success: false,
+      message: "Invalid BookId",
+    });
+  }
+  try {
+    const book = await Book.findByIdAndUpdate(id, newBookInfo, { new: true });
+    return res.status(200).json({
+      success: true,
+      updatedBook: book,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: `Error ${error.message}`,
+    });
+  }
+};
 
 // Delete Book
 export const deleteBook = (req, res) => res.send({ message: "Delete a Book" });
