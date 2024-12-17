@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const NavBar = () => {
   return (
     <div className="bg-blue-100">
-      <div className="container mx-auto flex justify-between items-center p-2">
+      <div className="container mx-auto flex flex-col sm:flex-row gap-2 justify-between items-center p-2">
         <Link to="/">
           <h1 className="text-3xl  font-bold bg-gradient-to-r from-cyan-400 to-blue-950 bg-clip-text text-transparent">
             BookStore

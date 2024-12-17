@@ -4,6 +4,7 @@ import { useBookStore } from "../store/book.store";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { FaRegWindowClose } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import { useState } from "react";
 Modal.setAppElement("#root");
@@ -64,9 +65,11 @@ const BookCard = ({ book }) => {
         <hr />
         <div className="flex items-center gap-2">
           <button className="text-xl mr-2 text-red-700 hover:text-red-800 transition-all duration-200 hover:-translate-y-1">
-            <span className="flex items-center gap-2">
-              <CgMoreO className="inline-block" /> More
-            </span>
+            <Link to={`/${book._id}`}>
+              <span className="flex items-center gap-2">
+                <CgMoreO className="inline-block" /> More
+              </span>
+            </Link>
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
