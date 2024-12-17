@@ -3,9 +3,15 @@ import { CgMoreO } from "react-icons/cg";
 import { useBookStore } from "../store/book.store";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-
+import { FaRegWindowClose } from "react-icons/fa";
+import Modal from "react-modal";
+import { useState } from "react";
+Modal.setAppElement("#root");
 const BookCard = ({ book }) => {
-  const { deleteBook } = useBookStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookToUpdate, setBookToUpdate] = useState(book);
+
+  const { deleteBook, updateBook } = useBookStore();
 
   const handleDelete = (bookId) => {
     confirmAlert({
@@ -33,6 +39,11 @@ const BookCard = ({ book }) => {
       ],
     });
   };
+
+  const handleUpdateBook = async (bookId, updatedBook) => {
+    await updateBook(bookId, updatedBook);
+    setIsModalOpen(false);
+  };
   return (
     <div className="bg-blue-50 flex-1 p-4 rounded-xl shadow-md">
       <img
@@ -57,7 +68,10 @@ const BookCard = ({ book }) => {
               <CgMoreO className="inline-block" /> More
             </span>
           </button>
-          <button className="text-xl mr-2 text-red-700 hover:text-red-800 transition-all duration-200 hover:-translate-y-1">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="text-xl mr-2 text-red-700 hover:text-red-800 transition-all duration-200 hover:-translate-y-1"
+          >
             <span className="flex items-center gap-2">
               <FiEdit className="inline-block" /> Edit
             </span>
@@ -72,6 +86,112 @@ const BookCard = ({ book }) => {
           </button>
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        className="bg-blue-50 max-w-[800px] mx-auto my-auto mt-20 p-10 rounded-lg"
+      >
+        {/* Header */}
+        <div className="flex justify-between">
+          <h2 className=" text-2xl text-blue-900 font-semibold py-2">
+            Update Course
+          </h2>
+          <button onClick={() => setIsModalOpen(false)}>
+            <FaRegWindowClose className="text-2xl font-bold text-red-800" />
+          </button>
+        </div>
+        <hr className="my-4" />
+        {/* Content */}
+        <div>
+          <div className="flex flex-col gap-4">
+            <input
+              type="text"
+              name="title"
+              className="p-2 rounded"
+              placeholder="Book Title"
+              value={bookToUpdate.title}
+              onChange={(e) =>
+                setBookToUpdate({ ...bookToUpdate, title: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              name="author"
+              className="p-2 rounded"
+              placeholder="Author Name"
+              value={bookToUpdate.author}
+              onChange={(e) => {
+                setBookToUpdate({ ...bookToUpdate, author: e.target.value });
+              }}
+            />
+            <input
+              type="text"
+              name="price"
+              className="p-2 rounded"
+              placeholder="Book Price"
+              value={bookToUpdate.price}
+              onChange={(e) => {
+                setBookToUpdate({ ...bookToUpdate, price: e.target.value });
+              }}
+            />
+            <input
+              type="text"
+              name="cover_image"
+              className="p-2 rounded"
+              placeholder="Cover Image URL"
+              value={bookToUpdate.cover_image}
+              onChange={(e) => {
+                setBookToUpdate({
+                  ...bookToUpdate,
+                  cover_image: e.target.value,
+                });
+              }}
+            />
+            <input
+              name="language"
+              type="text"
+              className="p-2 rounded"
+              placeholder="Language"
+              value={bookToUpdate.language}
+              onChange={(e) => {
+                setBookToUpdate({
+                  ...bookToUpdate,
+                  language: e.target.value,
+                });
+              }}
+            />
+            <textarea
+              name="description"
+              id="description"
+              placeholder="Book Description"
+              className="p-2 rounded"
+              value={bookToUpdate.description}
+              onChange={(e) => {
+                setBookToUpdate({
+                  ...bookToUpdate,
+                  description: e.target.value,
+                });
+              }}
+            ></textarea>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row gap-5 mt-4">
+          <button
+            onClick={() => handleUpdateBook(book._id, bookToUpdate)}
+            className="p-2 sm:w-1/2 bg-gradient-to-r from-cyan-400 to-blue-500 font-bold text-gray-700 rounded"
+          >
+            Update
+          </button>
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="p-2 sm:w-1/2 bg-gradient-to-r from-red-200 to-red-500 font-bold text-gray-700 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
