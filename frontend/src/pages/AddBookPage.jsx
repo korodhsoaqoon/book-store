@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useBookStore } from "../store/book.store";
+import { useNavigate } from "react-router-dom";
 
 const AddBookPage = () => {
+  const navigate = useNavigate();
   const { saveBook } = useBookStore();
   const [newBook, setNewBook] = useState({
     title: "",
@@ -14,6 +16,7 @@ const AddBookPage = () => {
 
   const handleSave = () => {
     const { success, message } = saveBook(newBook);
+    navigate("/");
     console.log(success);
     console.log(message);
   };

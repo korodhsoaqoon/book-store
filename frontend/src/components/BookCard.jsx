@@ -1,12 +1,37 @@
 import { FiTrash, FiEdit } from "react-icons/fi";
 import { CgMoreO } from "react-icons/cg";
 import { useBookStore } from "../store/book.store";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+
 const BookCard = ({ book }) => {
   const { deleteBook } = useBookStore();
 
-  const handleDelete = async (bookId) => {
-    const { success, message } = await deleteBook(bookId);
-    console.log(success, message);
+  const handleDelete = (bookId) => {
+    confirmAlert({
+      title: "Confirm Deletion",
+      message: "Are you sure you want to delete this book?",
+      buttons: [
+        {
+          label: "Yes I'm Sure",
+          onClick: async () => {
+            const { success, message } = await deleteBook(bookId);
+            if (success) {
+              console.log("Book Deleted Successfully");
+            } else {
+              console.log("Failed to delete the book");
+            }
+          },
+        },
+        {
+          label: "No, Cancel Deletion",
+          onClick: () => {
+            console.log("Deletion cancelled");
+            return;
+          },
+        },
+      ],
+    });
   };
   return (
     <div className="bg-blue-50 flex-1 p-4 rounded-xl shadow-md">
